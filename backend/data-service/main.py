@@ -4,8 +4,16 @@ from config import collection
 from bson.objectid import ObjectId
 from fastapi.encoders import jsonable_encoder
 from pydantic import BaseModel, Field
+from fastapi.middleware.cors import CORSMiddleware
 
 app = FastAPI()
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 class PyObjectId(ObjectId):
     @classmethod
     def __get_validators__(cls):
@@ -43,9 +51,9 @@ async def create_job(job: Job):
     new_job = await collection.insert_one(job)
     return {"id":str(new_job.inserted_id)}
 
-@app.get("/job/", response_model=List[Job])
-async def read_jobs():
-    jobs = await collection.find().to_list(1000)
+@app.get("/job/{user_id}", response_model=List[Job])
+async def read_jobs(user_id:str):
+    jobs = await collection.find({"user_id": user_id}).to_list(1000)
     return jobs
 
 @app.get("/job/{job_id}", response_model=Job)
