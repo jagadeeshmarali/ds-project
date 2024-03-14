@@ -81,3 +81,77 @@ sequenceDiagram
         API-->>C: Return result
     end
 ```
+
+## ClassDiagram(Dataservice)
+
+```mermaid
+classDiagram
+    class FastAPI {
+        +add_middleware(middleware)
+    }
+    class Job {
+        -id: Optional[str]
+        -name: str
+        -description: Optional[str]
+        -estimated_time: float
+        -user_id: str
+        -status: str
+        -created_at: datetime
+        -updated_at: datetime
+    }
+    class UpdateJob {
+        -name: Optional[str]
+        -description: Optional[str]
+        -estimated_time: Optional[float]
+        -status: Optional[str]
+    }
+    Job --> UpdateJob: updates
+    FastAPI --> Job: manages
+```
+
+## ClassDiagram(Kernel)
+```mermaid
+classDiagram
+    class FastAPI {
+        +add_middleware(middleware)
+    }
+    class JobExecutionRequest {
+        -job_name: str
+        -user_id: str
+        -description: Optional[str]
+        -estimated_time: float
+    }
+    class DataServiceClient {
+        +update_job()
+        +create_empty_job()
+    }
+    class HttpClient {
+        +start()
+        +stop()
+    }
+    FastAPI --> DataServiceClient: uses
+    FastAPI --> HttpClient: uses
+    DataServiceClient --> JobExecutionRequest: processes
+
+```
+## ClassDiagram(Worker)
+
+```mermaid
+classDiagram
+    class Worker {
+        +start()
+        +stop()
+    }
+    class StandardQueueWorker {
+        +start()
+        +stop()
+    }
+    class WorkerExecutor {
+        +start()
+        +stop()
+    }
+    Worker <|-- StandardQueueWorker
+    WorkerExecutor --> Worker: manages
+
+
+```
