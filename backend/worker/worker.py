@@ -1,5 +1,4 @@
 from abc import ABC, abstractmethod
-from config.env import settings
 import boto3
 from concurrent.futures import ThreadPoolExecutor
 from loguru import logger
@@ -7,6 +6,7 @@ import json
 from typing import Protocol, List
 import time
 import requests
+import os
 
 class WorkerProtocol(Protocol):
     def start(self):
@@ -55,7 +55,7 @@ class StandardQueueWorker(Worker):
                         payload = json.loads(message_body).get("payload")
                         estimated_time = payload.get("estimated_time")
                         job_id = payload.get("job_id")
-                        url = f"{settings.DATA_SERVICE_URL}/job/{job_id}"
+                        url = f"{os.environ['DATA_SERVICE_URL']}/job/{job_id}"
 
                         try:
                             
@@ -128,3 +128,20 @@ class WorkerExecutorManager:
     def stop_workers(self):
         for we in self.workers:
             we.stop()
+
+
+if __name__=="__main__":
+    import signal
+    import os
+    def handle_signal(signum, frame):
+        logger.info(f"Received signal {signum}, stopping workers...")
+        standard_executor.stop()
+        exit(0)
+    signal.signal(signal.SIGTERM, handle_signal)
+    signal.signal(signal.SIGINT, handle_signal)
+    standard_executor = WorkerExecutor(
+    worker=StandardQueueWorker(queue_name=os.environ["STANDARD_QUEUE_NAME"]),
+    max_workers=int(os.environ["STANDARD_QUEUE_WORKERS"]))
+    standard_executor.start()
+    signal.pause() 
+    

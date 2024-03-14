@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "crowdfunding": {
+    "distributedtaskprocessingapp": {
       "projectType": "application",
       "schematics": {
         "@schematics/angular:application": {
@@ -17,12 +17,15 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "outputPath": "dist/crowdfunding",
+            "outputPath": "dist/distributedtaskprocessingapp",
             "index": "src/index.html",
             "main": "src/main.ts",
             "polyfills": "src/polyfills.ts",
             "tsConfig": "tsconfig.app.json",
-            "assets": ["src/favicon.ico", "src/assets"],
+            "assets": [
+              "src/favicon.ico",
+              "src/assets"
+            ],
             "styles": [
               "./node_modules/@angular/material/prebuilt-themes/deeppurple-amber.css",
               "./node_modules/bootstrap/dist/css/bootstrap.min.css",
@@ -34,7 +37,9 @@
               "./node_modules/metismenujs/dist/metismenujs.css",
               "src/assets/css/style.css"
             ],
-            "scripts": ["node_modules/apexcharts/dist/apexcharts.min.js"]
+            "scripts": [
+              "node_modules/apexcharts/dist/apexcharts.min.js"
+            ]
           },
           "configurations": {
             "production": {
@@ -73,10 +78,10 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "browserTarget": "crowdfunding:build:production"
+              "browserTarget": "distributedtaskprocessingapp:build:production"
             },
             "development": {
-              "browserTarget": "crowdfunding:build:development"
+              "browserTarget": "distributedtaskprocessingapp:build:development"
             }
           },
           "defaultConfiguration": "development"
@@ -84,7 +89,7 @@
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "crowdfunding:build"
+            "browserTarget": "distributedtaskprocessingapp:build"
           }
         },
         "test": {
@@ -94,7 +99,10 @@
             "polyfills": "src/polyfills.ts",
             "tsConfig": "tsconfig.spec.json",
             "karmaConfig": "karma.conf.js",
-            "assets": ["src/favicon.ico", "src/assets"],
+            "assets": [
+              "src/favicon.ico",
+              "src/assets"
+            ],
             "styles": [
               "./node_modules/@angular/material/prebuilt-themes/indigo-pink.css",
               "src/styles.css"
@@ -105,5 +113,5 @@
       }
     }
   },
-  "defaultProject": "crowdfunding"
+  "defaultProject": "distributedtaskprocessingapp"
 }

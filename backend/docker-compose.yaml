@@ -36,18 +36,30 @@ services:
       DB_NAME: jobs_database
     env_file:
       - .env
-  # performance-test-master:
-  #   image: locustio/locust
-  #   ports:
-  #     - "8089:8089"
-  #   volumes:
-  #     - ./:/mnt/locust
-  #   command: -f /mnt/locust/load_testing.py --master --html /mnt/locust/stats.html --headless --run-time 100s -H https://inference-kernelv3dev.mlinfra.thinkdeeply.com --spawn-rate 2 --users 100
-  #   env_file:
-  #     - .env
 
-  # performance-test-worker1:
-  #   image: locustio/locust
-  #   volumes:
-  #     - ./:/mnt/locust
-  #   command: -f /mnt/locust/load_testing.py --worker --master-host performance-test-master
+  worker:
+    build:
+      context: .
+      dockerfile: worker/Dockerfile
+    image: worker:v1
+    command: "python ./worker.py"
+    volumes:
+      - ./worker/worker.py:/app/worker.py
+      - ./worker/requirements.txt:/app/requirements.txt
+    env_file:
+      - .env
+  performance-test-master:
+    image: locustio/locust
+    ports:
+      - "8089:8089"
+    volumes:
+      - ./:/mnt/locust
+    command: -f /mnt/locust/load_testing.py --master -H http://api:8082
+    env_file:
+      - .env
+
+  performance-test-worker1:
+    image: locustio/locust
+    volumes:
+      - ./:/mnt/locust
+    command: -f /mnt/locust/load_testing.py --worker --master-host performance-test-master

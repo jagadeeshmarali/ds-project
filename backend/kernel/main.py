@@ -22,25 +22,16 @@ from http_client import HttpClient
 http_client = HttpClient()
 
 app = FastAPI()
-from worker import WorkerExecutor, StandardQueueWorker, WorkerExecutorManager
-
-
-standard_executor = WorkerExecutor(
-    worker=StandardQueueWorker(queue_name=settings.STANDARD_QUEUE_NAME),
-    max_workers=settings.STANDARD_QUEUE_WORKERS,
-)
 
 
 @app.on_event("startup")
 async def startup():
     http_client.start()
-    standard_executor.start()
 
 
 @app.on_event("shutdown")
 async def shutdown():
     await http_client.stop()
-    standard_executor.stop()
 
 class JobExecutionRequest(BaseModel):
     job_name:str

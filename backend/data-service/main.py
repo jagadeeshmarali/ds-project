@@ -5,6 +5,7 @@ from bson.objectid import ObjectId
 from fastapi.encoders import jsonable_encoder
 from pydantic import BaseModel, Field
 from fastapi.middleware.cors import CORSMiddleware
+from datetime import datetime
 
 app = FastAPI()
 app.add_middleware(
@@ -36,6 +37,8 @@ class Job(BaseModel):
     estimated_time: float
     user_id:str
     status:str = "unknown"
+    created_at:datetime = datetime.now()
+    updated_at:datetime = datetime.now()
 
 class UpdateJob(BaseModel):
     name: Optional[str]
@@ -65,7 +68,10 @@ async def read_job(job_id: str):
 @app.put("/job/{job_id}", response_model=UpdateJob)
 async def update_job(job_id: str, job_update: UpdateJob):
     job = {k: v for k, v in job_update.dict().items() if v is not None}
-
+    job = {
+        **job,
+        "updated_at":datetime.now()
+    }
     if len(job) >= 1:
         update_result = await collection.update_one({"_id": ObjectId(job_id)}, {"$set": job})
 

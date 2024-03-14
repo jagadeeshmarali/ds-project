@@ -1,5 +1,5 @@
 {
-  "name": "Distributed Task Processing App",
+  "name": "distributedtaskprocessingapp",
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
