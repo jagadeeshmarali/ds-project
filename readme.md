@@ -157,8 +157,8 @@ classDiagram
 ```
 
 ## Kernel API Endpoint Table
-| Method | Endpoint                        | Description                                        | Request Body            | Query Parameters        | Response                      |
-|--------|---------------------------------|----------------------------------------------------|-------------------------|-------------------------|-------------------------------|
+| Method | Endpoint                | Description                             | Request Body         | Query Parameters | Response              |
+|--------|-------------------------|-----------------------------------------|----------------------|------------------|-----------------------|
 | POST   | `/api/v1/job_executor/async`    | Initiates the asynchronous execution of a job      | `JobExecutionRequest`   | `executor` (optional)   | `{status: 200, job_id: <job_id>}` |
 
 
