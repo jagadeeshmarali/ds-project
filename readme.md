@@ -155,3 +155,18 @@ classDiagram
 
 
 ```
+
+## Kernel API Endpoint Table
+| Method | Endpoint                        | Description                                        | Request Body            | Query Parameters        | Response                      |
+|--------|---------------------------------|----------------------------------------------------|-------------------------|-------------------------|-------------------------------|
+| POST   | `/api/v1/job_executor/async`    | Initiates the asynchronous execution of a job      | `JobExecutionRequest`   | `executor` (optional)   | `{status: 200, job_id: <job_id>}` |
+
+
+## Dataservice API Endpoint Table
+| Method | Endpoint                | Description                             | Request Body         | Query Parameters | Response              |
+|--------|-------------------------|-----------------------------------------|----------------------|------------------|-----------------------|
+| POST   | `/job/`                 | Create a new job                        | `Job`                | N/A              | `{"id": <new_job_id>}`|
+| GET    | `/job/{user_id}`        | Retrieve all jobs for a specific user   | N/A                  | N/A              | `[Job]`               |
+| GET    | `/job/{job_id}`         | Retrieve a specific job by its ID       | N/A                  | N/A              | `Job`                 |
+| PUT    | `/job/{job_id}`         | Update a job by its ID                  | `UpdateJob`          | N/A              | `UpdateJob`           |
+| DELETE | `/jobs/{job_id}`        | Delete a job by its ID                  | N/A                  | N/A              | `{"message": "Job <job_id> deleted."}` |
